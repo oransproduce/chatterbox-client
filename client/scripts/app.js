@@ -14,19 +14,17 @@ var App = {
     App.startSpinner();
     App.fetch(App.stopSpinner);
 
+    setInterval(App.fetch.bind(this), 5000);
   },
 
   fetch: function(callback = ()=>{}) {
     Parse.readAll((data) => {
       // examine the response from the server request:
       console.log(data);
-
+      console.log('fetched');
       Messages.storage = data.results;
       MessagesView.render();
-      // let arr = data.results;
-      // for (let message of arr) {
-      //   console.log(message);
-      // }
+
       callback();
     });
   },

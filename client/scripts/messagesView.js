@@ -7,25 +7,46 @@ var MessagesView = {
 
   },
 
+  //fetches data from the server
   render: function() {
     // MessageView.render(msg object) => string => jquery node(string)
 
     // create totalString
     let outputString = '';
     for (let msg of Messages.storage) {
+      MessagesView.defender(msg);
+      if (!msg.username){
+        continue;
+      }
       outputString += MessageView.render(msg);
     }
     let messagesNode = $(outputString);
-    MessagesView.$chats.append(messagesNode);
+    MessagesView.$chats.prepend(messagesNode);
     Messages.storage = [];
 
   },
-
+  //For local pushing, also to server
   renderMessage: function(message) {
+    MessagesView.defender(message);
     let node = $(MessageView.render(message));
-    MessagesView.$chats.append(node);
+    MessagesView.$chats.prepend(node);
     Messages.storage = [];
+  },
+
+  defender: function(message) {
+    let replaceWith = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;'
+    };
+    for (let prop in message) {
+      if (message[prop]) {
+        message[prop] = message[prop].replace(/[&<>]/g, function(tag) {
+          return replaceWith[tag] || tag;
+        });
+      }
+
+    }
   }
 };
-
 
