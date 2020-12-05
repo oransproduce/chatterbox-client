@@ -13,9 +13,15 @@ var MessagesView = {
 
     // create totalString
     let outputString = '';
+    // console.log("dictionary", Messages.entries);
     for (let msg of Messages.storage) {
       MessagesView.defender(msg);
-      if (!msg.username){
+      if (msg.objectId in Messages.entries){
+        continue;
+      } else {
+        Messages.entries[msg.objectId] = 1;
+      }
+      if (!msg.username || !msg.text){
         continue;
       }
       outputString += MessageView.render(msg);

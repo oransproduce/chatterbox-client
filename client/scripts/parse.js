@@ -15,7 +15,7 @@ var Parse = {
 
         //Messages.storage.push(message);
         MessagesView.renderMessage(message);
-        console.log(Messages.storage);
+        // console.log(Messages.storage);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
