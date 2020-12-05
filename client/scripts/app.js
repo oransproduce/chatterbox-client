@@ -1,8 +1,7 @@
 var App = {
 
   $spinner: $('.spinner img'),
-
-  username: 'anonymous',
+  username: 'remy',
 
   initialize: function() {
     App.username = window.location.search.substr(10);
@@ -22,6 +21,12 @@ var App = {
       // examine the response from the server request:
       console.log(data);
 
+      Messages.storage = data.results;
+      MessagesView.render();
+      // let arr = data.results;
+      // for (let message of arr) {
+      //   console.log(message);
+      // }
       callback();
     });
   },
