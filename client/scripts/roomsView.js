@@ -13,16 +13,47 @@ var RoomsView = {
     console.log('room submitted');
     //Parse.create(message);
     Rooms.storage.push($('#message').val());
-    RoomsView.$select.append($('<option>', {
-      value: 1,
-      text: $('#message').val()
-    }));
+
+
+    var roomObj = {
+      roomname: $('#message').val()
+    };
+
+    Parse.create(roomObj, (data) => {
+      roomObj = _.extend(roomObj, data);
+      RoomsView.renderRoom(roomObj);
+      console.log(data);
+    }, null, 'rooms');
 
   },
+
+
+
 
   render: function() {
+
+    for (let room of Rooms.storage){
+      MessagesView.defender(room);
+      if (room.objectId in Rooms.entries){
+        continue;
+      } else {
+        Rooms.entries[room.objectId] = 1;
+        let node = $('<option>', {
+          value: 1,
+          text: room.roomname
+        });
+        RoomsView.$select.append(node);
+      }
+    }
   },
 
-
+  renderRoom: function(room){
+    MessagesView.defender(room);
+    Rooms.entries[room.objectId] = 1;
+    RoomsView.$select.append($('<option>', {
+      value: 1,
+      text: room.roomname
+    }));
+  }
 
 };

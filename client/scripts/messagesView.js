@@ -34,6 +34,7 @@ var MessagesView = {
   //For local pushing, also to server
   renderMessage: function(message) {
     MessagesView.defender(message);
+    Messages.entries[message.objectId] = 1;
     let node = $(MessageView.render(message));
     MessagesView.$chats.prepend(node);
     Messages.storage = [];

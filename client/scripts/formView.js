@@ -15,9 +15,13 @@ var FormView = {
       text: $('#message').val(),
       roomname: 'test'
     };
-    // console.log(message);
-    console.log('click!');
-    Parse.create(message);
+
+
+    Parse.create(message, (data) => {
+      message = _.extend(message, data);
+      MessagesView.renderMessage(message);
+    }, null, 'messages');
+
   },
 
   setStatus: function(active) {
