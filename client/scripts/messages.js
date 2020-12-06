@@ -4,6 +4,9 @@ var Messages = {
 Messages.storage = [];
 Messages.entries = {};
 
+Messages.newlyFetched = [];
+
+
 
 
 

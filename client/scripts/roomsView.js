@@ -5,6 +5,7 @@ var RoomsView = {
 
   initialize: function() {
     RoomsView.$button.on('click', RoomsView.handleSubmit);
+    $('#rooms select').change(RoomsView.selectChanged);
   },
 
   handleSubmit: function(event) {
@@ -22,13 +23,16 @@ var RoomsView = {
     Parse.create(roomObj, (data) => {
       roomObj = _.extend(roomObj, data);
       RoomsView.renderRoom(roomObj);
-      console.log(data);
+      //console.log(data);
     }, null, 'rooms');
 
   },
 
+  selectChanged: function() {
+    let roomName = $('#rooms select :selected').text();
+    MessagesView.filterByRoom(roomName);
 
-
+  },
 
   render: function() {
 

@@ -13,12 +13,16 @@ var FormView = {
     var message = {
       username: App.username,
       text: $('#message').val(),
-      roomname: 'test'
-    };
+      roomname: $('#rooms select :selected').text()
 
+    };
+    //console.log("message", message);
 
     Parse.create(message, (data) => {
       message = _.extend(message, data);
+      if (!(message.objectId in Messages.entries)) {
+        Messages.storage.push(message);
+      }
       MessagesView.renderMessage(message);
     }, null, 'messages');
 

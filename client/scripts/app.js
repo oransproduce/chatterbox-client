@@ -15,7 +15,12 @@ var App = {
     App.fetch(App.stopSpinner);
     App.fetch(
       function(data) {
-        Messages.storage = data.results;
+        for (let msg of data.results) {
+          if (!(msg.objectId in Messages.entries)) {
+            Messages.newlyFetched.push(msg);
+          }
+        }
+        //Messages.storage = data.results;
         MessagesView.render();
       }, 'messages');
 
@@ -31,7 +36,12 @@ var App = {
     }, 'rooms'), 5000);
 
     setInterval(App.fetch.bind(this, (data) => {
-      Messages.storage = data.results;
+      for (let msg of data.results) {
+        if (!(msg.objectId in Messages.entries)) {
+          Messages.newlyFetched.push(msg);
+        }
+      }
+      //Messages.storage = data.results;
       MessagesView.render();
     }, 'messages'), 5000);
   },
@@ -39,7 +49,7 @@ var App = {
   fetch: function(callback = ()=>{}, endpoint) {
     Parse.readAll((data) => {
       // examine the response from the server request:
-      console.log(data);
+      //console.log(data);
       callback(data);
     }, endpoint);
   },
