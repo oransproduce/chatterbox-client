@@ -6,6 +6,10 @@ var RoomsView = {
   initialize: function() {
     RoomsView.$button.on('click', RoomsView.handleSubmit);
     $('#rooms select').change(RoomsView.selectChanged);
+    RoomsView.$select.append($('<option>', {
+      value: 1,
+      text: 'lobby'
+    }));
   },
 
   handleSubmit: function(event) {
@@ -29,9 +33,9 @@ var RoomsView = {
   },
 
   selectChanged: function() {
-    let roomName = $('#rooms select :selected').text();
-    MessagesView.filterByRoom(roomName);
-
+    MessagesView.currentRoom = $('#rooms select :selected').text();
+    console.log('currentRoom: ' + MessagesView.currentRoom);
+    
   },
 
   render: function() {

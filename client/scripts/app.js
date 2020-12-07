@@ -13,16 +13,10 @@ var App = {
     // Fetch initial batch of messages
     App.startSpinner();
     App.fetch(App.stopSpinner);
-    App.fetch(
-      function(data) {
-        for (let msg of data.results) {
-          if (!(msg.objectId in Messages.entries)) {
-            Messages.newlyFetched.push(msg);
-          }
-        }
-        //Messages.storage = data.results;
-        MessagesView.render();
-      }, 'messages');
+
+
+
+    App.fetch(App.msgFetchCb, 'messages');
 
     App.fetch(
       (data) => {
@@ -35,15 +29,7 @@ var App = {
       RoomsView.render();
     }, 'rooms'), 5000);
 
-    setInterval(App.fetch.bind(this, (data) => {
-      for (let msg of data.results) {
-        if (!(msg.objectId in Messages.entries)) {
-          Messages.newlyFetched.push(msg);
-        }
-      }
-      //Messages.storage = data.results;
-      MessagesView.render();
-    }, 'messages'), 5000);
+    setInterval(App.fetch.bind(this, App.msgFetchCb, 'messages'), 5000);
   },
 
   fetch: function(callback = ()=>{}, endpoint) {
@@ -62,5 +48,20 @@ var App = {
   stopSpinner: function() {
     App.$spinner.fadeOut('fast');
     FormView.setStatus(false);
-  }
+  },
+
+  msgFetchCb: function (data) {
+    for (let msg of data.results) {
+      if (!(msg.objectId in Messages.entries)) {
+        Messages.newlyFetched.push(msg);
+        Messages.entries[msg.objectId] = 1;
+      }
+    }
+    console.log('test');
+    //Messages.storage = data.results;
+    // MessagesView.render(Messages.newlyFetched);
+    Messages.storage = Messages.storage.concat(Messages.newlyFetched);
+    Messages.newlyFetched = [];
+  },
 };
+
